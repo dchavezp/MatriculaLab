@@ -5,7 +5,13 @@
     <title></title>
 </head>
 <body>
-    Hola
+	<h1>Home page</h1>
+	<p>This is Home page.</p>
+	<p>Don't forget: ${thought}</p>
+	<p>The last student was: ${personObj.firstName}, ${personObj.age}</p>
+	<p>
+		<a href="person-form.html">Person page</a> <br />
+	</p>
 </body>
 
 
