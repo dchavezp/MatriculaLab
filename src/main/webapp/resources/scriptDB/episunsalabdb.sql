@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 02-01-2018 a las 01:06:19
+-- Tiempo de generación: 03-01-2018 a las 08:54:17
 -- Versión del servidor: 5.7.19
 -- Versión de PHP: 5.6.31
 
@@ -42,28 +42,42 @@ CREATE TABLE IF NOT EXISTS `course` (
 --
 
 INSERT INTO `course` (`courseID`, `courseName`, `enabled`) VALUES
-('1701108', 'fundamentos de programación 1', 1),
-('1701215', 'fudamentos de programación 2', 1),
-('1703133', 'ingenieria de software y procesos', 1),
-('1703236', 'construcción de software ', 1),
-('1703238', 'tecnologia de objetos', 1),
-('1704146', 'diseño y arquitecura de software', 1);
+('1701108', 'Fundamentos de Programación 1', 1),
+('1701215', 'Fundamentos de Programación 2', 1),
+('1703133', 'Ingenieria de Software y Procesos', 1),
+('1703236', 'Construcción de Software ', 1),
+('1703238', 'Tecnologia de Objetos', 1),
+('1704146', 'Diseño y Arquitecura de Software', 1),
+('1704250', 'Gestion de Proyectos de Software', 1);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `course_student`
+-- Estructura de tabla para la tabla `evaluations`
 --
 
-DROP TABLE IF EXISTS `course_student`;
-CREATE TABLE IF NOT EXISTS `course_student` (
-  `courseID` int(11) NOT NULL,
+DROP TABLE IF EXISTS `evaluations`;
+CREATE TABLE IF NOT EXISTS `evaluations` (
+  `idEvaluations` int(11) NOT NULL AUTO_INCREMENT,
+  `courseID` varchar(7) NOT NULL,
   `studentID` int(11) NOT NULL,
-  `evaluationN1` tinyint(2) NOT NULL,
-  `evaluationN2` tinyint(2) NOT NULL,
-  `evaluationN3` tinyint(2) NOT NULL,
-  `studentState` tinyint(1) NOT NULL COMMENT '''1'' aprobado ''0'' desaprobadp'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `evaluationN1` decimal(2,0) NOT NULL,
+  `evaluationN2` decimal(2,0) NOT NULL,
+  `evaluationN3` decimal(2,0) NOT NULL,
+  PRIMARY KEY (`idEvaluations`),
+  KEY `courseID` (`courseID`),
+  KEY `studentID` (`studentID`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `evaluations`
+--
+
+INSERT INTO `evaluations` (`idEvaluations`, `courseID`, `studentID`, `evaluationN1`, `evaluationN2`, `evaluationN3`) VALUES
+(5, '1701108', 3, '2', '4', '5'),
+(6, '1703133', 2, '4', '4', '5'),
+(7, '1701108', 1, '1', '1', '5'),
+(8, '1704146', 4, '6', '6', '6');
 
 -- --------------------------------------------------------
 
@@ -73,10 +87,23 @@ CREATE TABLE IF NOT EXISTS `course_student` (
 
 DROP TABLE IF EXISTS `registration`;
 CREATE TABLE IF NOT EXISTS `registration` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `studentID` int(11) NOT NULL,
-  `courseID` int(11) NOT NULL,
-  `groupRegistration` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `courseID` varchar(7) NOT NULL,
+  `groupRegistration` varchar(1) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID` (`ID`),
+  KEY `studentID` (`studentID`),
+  KEY `courseID` (`courseID`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `registration`
+--
+
+INSERT INTO `registration` (`ID`, `studentID`, `courseID`, `groupRegistration`) VALUES
+(1, 4, '1704250', 'A'),
+(3, 2, '1703238', 'A');
 
 -- --------------------------------------------------------
 
@@ -96,16 +123,17 @@ CREATE TABLE IF NOT EXISTS `student` (
   `third` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`studentID`),
   UNIQUE KEY `studentID` (`studentID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `student`
 --
 
 INSERT INTO `student` (`studentID`, `studentName`, `studentLastName`, `studentCUI`, `username`, `enabled`, `password`, `third`) VALUES
-(1, 'juan', 'garcia', '20131516', 'jgarcia@gmail.com', 1, '123789', 1),
-(2, 'pedro', 'valencia', '20145685', 'pvalencia@gmail.com', 1, '456789', 1),
-(3, 'carlos', 'gonzales', '20154685', 'cgonzales@gmail.com', 1, '123456', 1);
+(1, 'juan', 'garcia', '20131516', 'jgarcia@gmail.com', 1, '123789', 3),
+(2, 'pedro', 'valencia', '20145685', 'pvalencia@gmail.com', 1, '456789', 2),
+(3, 'carlos', 'gonzales', '20154685', 'cgonzales@gmail.com', 1, '123456', 3),
+(4, 'maria', 'zambrano', '20121617', 'mzambrano@gmail.com', 1, '456123', 1);
 
 -- --------------------------------------------------------
 
@@ -115,23 +143,27 @@ INSERT INTO `student` (`studentID`, `studentName`, `studentLastName`, `studentCU
 
 DROP TABLE IF EXISTS `syllabus`;
 CREATE TABLE IF NOT EXISTS `syllabus` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `courseID` varchar(7) NOT NULL,
   `coursePrerequisite` varchar(7) NOT NULL,
-  `semester` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `semester` tinyint(1) NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `course` (`courseID`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `syllabus`
 --
 
-INSERT INTO `syllabus` (`courseID`, `coursePrerequisite`, `semester`) VALUES
-('1701108', '', 1),
-('1701215', '1701108', 2),
-('1703133', '', 1),
-('1703238', '1703133', 2),
-('1703134', '', 1),
-('1704146', '1703134', 1),
-('1704146', '1703238', 1);
+INSERT INTO `syllabus` (`ID`, `courseID`, `coursePrerequisite`, `semester`) VALUES
+(21, '1701108', '-', 1),
+(22, '1701215', '1701108', 2),
+(23, '1703133', '-', 5),
+(24, '1703238', '1703133', 6),
+(25, '1703236', '-', 6),
+(26, '1704146', '1703136', 7),
+(27, '1704146', '1703238', 7),
+(28, '1704250', '1704146', 8);
 
 -- --------------------------------------------------------
 
@@ -147,7 +179,7 @@ CREATE TABLE IF NOT EXISTS `user_roles` (
   PRIMARY KEY (`roleID`),
   UNIQUE KEY `roleID` (`roleID`),
   UNIQUE KEY `email` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `user_roles`
@@ -156,7 +188,32 @@ CREATE TABLE IF NOT EXISTS `user_roles` (
 INSERT INTO `user_roles` (`roleID`, `username`, `role`) VALUES
 (1, 'jgarcia@gmail.com', 'ROLE_STUDENT'),
 (2, 'pvalencia@gmail.com', 'ROLE_STUDENT'),
-(3, 'cgonzales@gmail.com', 'ROLE_STUDENT');
+(3, 'cgonzales@gmail.com', 'ROLE_STUDENT'),
+(4, 'mzambrano@gmail.com', 'ROLE_STUDENT');
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `evaluations`
+--
+ALTER TABLE `evaluations`
+  ADD CONSTRAINT `evaluations_ibfk_1` FOREIGN KEY (`studentID`) REFERENCES `student` (`studentID`),
+  ADD CONSTRAINT `evaluations_ibfk_2` FOREIGN KEY (`courseID`) REFERENCES `course` (`courseID`);
+
+--
+-- Filtros para la tabla `registration`
+--
+ALTER TABLE `registration`
+  ADD CONSTRAINT `registration_ibfk_1` FOREIGN KEY (`courseID`) REFERENCES `course` (`courseID`),
+  ADD CONSTRAINT `registration_ibfk_2` FOREIGN KEY (`studentID`) REFERENCES `student` (`studentID`);
+
+--
+-- Filtros para la tabla `syllabus`
+--
+ALTER TABLE `syllabus`
+  ADD CONSTRAINT `syllabus_ibfk_1` FOREIGN KEY (`courseID`) REFERENCES `course` (`courseID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

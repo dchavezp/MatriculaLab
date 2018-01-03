@@ -18,6 +18,8 @@
 		<intercept-url pattern="/student" access="hasRole('ROLE_STUDENT')" />
 		<intercept-url pattern="/student/listCourses" access="hasRole('ROLE_STUDENT')" />
 		<intercept-url pattern="/student/registration" access="hasRole('ROLE_STUDENT')" />
+		<intercept-url pattern="/student/saveRegistry" access="hasRole('ROLE_STUDENT')" />
+		<intercept-url pattern="/student/listCoursesReg" access="hasRole('ROLE_STUDENT')" />
 		<access-denied-handler error-page="/403" />
 
 

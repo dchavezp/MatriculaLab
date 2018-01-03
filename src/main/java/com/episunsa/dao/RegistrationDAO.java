@@ -29,7 +29,7 @@ public class RegistrationDAO implements InterfaceDAO<Registration> {
 
 	@Override
 	public List<Registration> listAll() {
-		String sql = "SELECT * from student";
+		String sql = "SELECT * from registration";
 		// TODO Auto-generated method stub
 		List<Registration> list = jdbcTemplate.query(sql, new RowMapper<Registration>() {
 			public Registration mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -51,5 +51,16 @@ public class RegistrationDAO implements InterfaceDAO<Registration> {
 	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
-
+	public List<Registration> listRegUser(int studentID){
+		String sql = "SELECT * from registration WHERE studentID='"+studentID+"'";
+		// TODO Auto-generated method stub
+		List<Registration> list = jdbcTemplate.query(sql, new RowMapper<Registration>() {
+			public Registration mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Registration aRegistry = new Registration.BuilderRegistration(rs.getInt("studentID"),
+						rs.getString("courseID")).setGroup(rs.getString("groupRegistration")).build();
+				return aRegistry;
+			}
+		});
+		return list;
+	}
 }
