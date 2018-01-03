@@ -8,7 +8,7 @@ public class Evaluations {
 	private final double evaluationN2;
 	private final double evaluationN3;
 	private double prom=0.0;
-	private boolean state=StudentState.APPROVED.state();
+	private boolean state;
 
 	public static class BuilderEvaluations implements Builder<Evaluations>{
 		private final String courseID;
@@ -16,6 +16,8 @@ public class Evaluations {
 		private double evaluationN1=0.0;
 		private double evaluationN2=0.0;
 		private double evaluationN3=0.0;
+		private double prom=0.0;
+		private boolean state;
 		public BuilderEvaluations(String course,int codStudendt) {
 			this.courseID=course;
 			this.studentID=codStudendt;
@@ -34,7 +36,12 @@ public class Evaluations {
 		}
 		@Override
 		public Evaluations build() {
-			// TODO Auto-generated method stub
+			this.prom=this.evaluationN1+this.evaluationN2+this.evaluationN3;
+			double val=this.prom;
+			if(val<=10.0)
+				this.state=StudentState.DESAPPROVED.state();
+			else
+				this.state=StudentState.APPROVED.state();
 			return new Evaluations(this);
 		}
 		
@@ -45,13 +52,11 @@ public class Evaluations {
 		this.evaluationN1=build.evaluationN1;
 		this.evaluationN2=build.evaluationN2;
 		this.evaluationN3=build.evaluationN3;
-		this.prom=Math.round(build.evaluationN1+build.evaluationN2+build.evaluationN3);
-		if(this.prom<10)
-			this.state=StudentState.DESAPPROVED.state();
-		this.state=StudentState.APPROVED.state();
+		this.prom=build.prom;
+		this.state=build.state;
 	}
-	public boolean getState() {
-		return state;
+	public boolean getCourseState() {
+		return this.state;
 	}
 	public String getCourseID() {
 		return courseID;

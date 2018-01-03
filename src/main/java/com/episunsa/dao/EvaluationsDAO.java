@@ -45,21 +45,19 @@ public class EvaluationsDAO implements InterfaceDAO<Evaluations> {
 	public void update(Evaluations dat) throws UnsupportedOperationException {
 	}
 
-	public boolean isApproved(String courseID, int studentID) {
-		String sql = "SELECT * from evaluations WHERE courseID= '" + courseID + "'" + " AND studentID='" + studentID
-				+ "'";
+	public List<Evaluations> listCourses(int studentID) {
+		String sql = "SELECT * from evaluations WHERE studentID= '"+ studentID+ "'" ;
 		List<Evaluations> listEvaluations = jdbcTemplate.query(sql, new RowMapper<Evaluations>() {
+			@Override
 			public Evaluations mapRow(ResultSet rs, int rowNum) throws SQLException {
-				Evaluations aStudent = new Evaluations.BuilderEvaluations(rs.getString("courseID"),
+				Evaluations aEval = new Evaluations.BuilderEvaluations(rs.getString("courseID"),
 						rs.getInt("studentID")).setEvaluationN1(rs.getDouble("evaluationN1"))
 								.setEvaluationN2(rs.getDouble("evaluationN2"))
 								.setEvaluationN3(rs.getDouble("evaluationN3")).build();
-				return aStudent;
+				return aEval;
 			}
 		});
-		if (listEvaluations.get(0).getState())
-			return listEvaluations.get(0).getState();
-		return false;
+		return listEvaluations;
 	}
 
 	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {

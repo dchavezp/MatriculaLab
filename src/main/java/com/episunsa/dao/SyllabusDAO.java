@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import com.episunsa.logic.Course;
 import com.episunsa.logic.Syllabus;
 
 @Repository
@@ -48,5 +49,19 @@ public class SyllabusDAO implements InterfaceDAO<Syllabus> {
 
 	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
+	}
+	public String getcourseToTake(String precourse) {
+		String sql = "SELECT * from syllabus WHERE coursePrerequisite= '" + precourse + "'";
+		List<Syllabus> listStudents = jdbcTemplate.query(sql, new RowMapper<Syllabus>() {
+			public Syllabus mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Syllabus aData = new Syllabus();
+				aData.setId(rs.getInt("ID"));
+				aData.setCourseID(rs.getString("courseID"));
+				aData.setCoursePrerequisite(rs.getString("coursePrerequisite"));
+				aData.setSemester(rs.getInt("semester"));
+				return aData;
+			}
+		});
+		return listStudents.get(0).getCourseID();
 	}
 }
