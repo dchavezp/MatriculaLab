@@ -46,7 +46,7 @@ public class HomeController {
         // After user login successfully.
         String userName = principal.getName();
  
-        System.out.println("User Name: "+ userName);
+        System.out.println("Nombre de usuario: "+ userName);
  
         return "userInfoPage";
     }
@@ -56,10 +56,10 @@ public class HomeController {
          
         if (principal != null) {
             model.addAttribute("message", "Hi " + principal.getName()
-                    + "<br> You do not have permission to access this page!");
+                    + "<br> No tienes permisos para acceder a esta página!");
         } else {
             model.addAttribute("msg",
-                    "You do not have permission to access this page!");
+                    "No tienes permisos para acceder a esta página!");
         }
         return "403Page";
     }

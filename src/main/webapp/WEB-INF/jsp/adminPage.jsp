@@ -7,8 +7,8 @@
 </head>
 <body>
 	<jsp:include page="menu.jsp" />
-	<h2>Admin Page</h2>
-	<h3>Welcome : ${pageContext.request.userPrincipal.name}</h3>
-	<b>This is protected page!</b>
+	<h2>Pagina Administrador</h2>
+	<h3>Bienvenido : ${pageContext.request.userPrincipal.name}</h3>
+	<b>P&aacute;gina Protegida!</b>
 </body>
 </html>
